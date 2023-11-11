@@ -34,10 +34,11 @@ class Spotify(object):
         self.secs_token_valid = int(content["expires_in"])
     
     def get_tracks_of_album(self, album_id):
+        self.authorize()
         header = {"Authorization": f"Bearer {self.access_token}"}
-        url = "https://api.spotify.com/v1/albums/6tAlnBBhfQ2JKgccEXox4p/tracks"
+        url = f"https://api.spotify.com/v1/albums/{album_id}/tracks"
         resp = requests.get(headers=header, url= url)
         content = json.loads(resp.content.decode())
 
         song_ids = [x["id"] for x in content["items"]]
-        print(song_ids)
+        return song_ids

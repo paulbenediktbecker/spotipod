@@ -1,14 +1,21 @@
 import json
 import os 
+import threading
+import time
+
+#import asyncio
+#asyncio.set_event_loop(asyncio.new_event_loop())
 
 from spotify_api import Spotify
 from secret import client_id, client_secret
 
 from spotdl import Spotdl, DownloaderOptionalOptions
-
+from kafka import KafkaConsumer, KafkaProducer
 
 
 FILENAME = "data.json"
+
+
 
 class Storage(object):
 
@@ -16,9 +23,16 @@ class Storage(object):
         self.data = None
         self.init_file()
         self.spotify = Spotify()
+
+        #kafka producer    
         
-        options = DownloaderOptionalOptions(output="music/{track-id}.{output-ext}")
-        self.spotdl = Spotdl(client_id=client_id, client_secret=client_secret,downloader_settings=options)
+        
+        #start downloader
+        #worker = Worker()
+        #thread = threading.Thread(target=worker.work)
+        #thread.start()
+
+
         pass
 
     def init_file(self):
@@ -58,14 +72,26 @@ class Storage(object):
         if track_id in self.data["tracks"]:
             return
         
-
-        songs = self.spotdl.search(
-            ['https://open.spotify.com/intl-de/track/6b6nLUteRmUBw6AVlwy8pQ?si=405a1e00d434415e'])
-
-        song, path = self.spotdl.download(songs[0])
+        self.send_to_downloader(track_id)
         self.data["tracks"].append(track_id)
+        self.persist()
+
+    def persist(self):
+        with open(FILENAME, 'w') as fp:
+            json.dump(self.data, fp)
+
+    def send_to_downloader(self, track_id):
+            try:
+                self.producer = KafkaProducer(bootstrap_servers='localhost:29092')
+                # Produce a message to the specified topic
+                self.producer.send("my_favorite_topic", key=b'key', value=track_id.encode())
+                self.producer.flush()  # Wait for any outstanding messages to be delivered
+                print('Message sent successfully.')
+            except Exception as e:
+                print(f'Error producing message: {str(e)}')
+            finally:
+                self.producer.close()
+            print(f"sent id {track_id}")
 
     
-
-
     

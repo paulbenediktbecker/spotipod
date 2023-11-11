@@ -5,8 +5,7 @@ from flask import Flask, request
 
 from storage import Storage
 
-import asyncio
-asyncio.set_event_loop(asyncio.new_event_loop())
+
 app = Flask(__name__)
 
 storage = Storage()
