@@ -28,6 +28,9 @@ class Worker(object):
         results = self.spotdl.download_songs(songs)
         #song, path = self.spotdl.download(songs[0])
 
+    def sync_ipod(self):
+        pass
+
 
     def work(self):
         print("consuming")    
@@ -35,9 +38,14 @@ class Worker(object):
             # Poll for new messages
             for msg in self.consumer:
                 val = msg.value.decode()
-                print(f"received id {val}")
+                key = msg.key.decode()
 
-                self.download_song(val)
+                if key == "download":
+                    print(f"received id {val}")
+                    self.download_song(val)
+
+                elif key == "sync":
+                    self.sync_ipod()
         except KeyboardInterrupt:
             pass
         finally:

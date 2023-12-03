@@ -84,7 +84,7 @@ class Storage(object):
             try:
                 self.producer = KafkaProducer(bootstrap_servers='localhost:29092')
                 # Produce a message to the specified topic
-                self.producer.send("my_favorite_topic", key=b'key', value=track_id.encode())
+                self.producer.send("my_favorite_topic", key=b'download', value=track_id.encode())
                 self.producer.flush()  # Wait for any outstanding messages to be delivered
                 print('Message sent successfully.')
             except Exception as e:
