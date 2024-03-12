@@ -9,7 +9,7 @@ from spotify_api import Spotify
 album = "https://open.spotify.com/album/2g6eUnuvDUSkGdUDmc2vBy?si=u5uaq8N3R1u6V-c8rEDXQA"
 
 
-access_token = "BQCa_mn-zoIYjpBWXVOg82-3AQ4pt61uwIX-1OqZBn4vjXBJqf4Kar9j9MqqOONw5LHi50ghNOSoJyaADj2xcnqPxQaXSSapKMxBHQZKUY9bheICH9w"
+access_token = ""
 
 tracks = [
     #"https://open.spotify.com/intl-de/album/5D7GOcUkCiSEyvvWOLuPFj?si=NW2OxG_kSQ-oQvY1VEfVbg",
