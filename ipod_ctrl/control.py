@@ -35,12 +35,15 @@ class IpodController(object):
 
         run(["sudo" ,"mount", self.sys_mnt, self.mnt_dir])
 
-    def add(self, mp3_file): 
+    def add(self, mp3_files): 
         self.ensure_mounted()
-        run(["perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir, mp3_file])
+        cmd = ["sudo", "perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir]
+        cmd += mp3_files
+        run(cmd)
+        self.release()
 
     def release(self):
-        cmd = [f"{self.base_dir}/mktunes.pl" ,"-m" ,self.mnt_dir]
+        cmd = ["sudo", f"{self.base_dir}/mktunes.pl" ,"-m" ,self.mnt_dir]
         run(cmd)
         self.unmount()
 

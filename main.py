@@ -3,8 +3,9 @@ import subprocess
 
 from flask import Flask, request
 
-from storage import Storage
-
+from spotipod.storage import Storage
+from ipod_ctrl.sync import SyncController
+from ipod_ctrl.control import IpodController
 
 app = Flask(__name__)
 
@@ -40,7 +41,12 @@ def add():
     return "400" 
     
 
-
+@app.route('/sync', methods=['GET'])
+def sync():
+    SyncController().sync()
+    print("synced.")
+    return "200"
+    
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
 

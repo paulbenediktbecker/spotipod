@@ -2,7 +2,7 @@ import requests
 import json
 import datetime
 
-from secret import client_id, client_secret
+from .secret import client_id, client_secret
 
 class Spotify(object):
     

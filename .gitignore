@@ -1,1 +1,4 @@
 **music/
+*.pyc
+.vscode**
+*secret.py

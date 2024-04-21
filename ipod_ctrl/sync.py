@@ -1,4 +1,4 @@
-import constant as c
+from spotipod import constant as c
 from .control import IpodController
 
 import json 
@@ -12,10 +12,9 @@ class SyncController(object):
     def sync(self):
         tracks_to_add = self.get_tracks_to_add()
 
-        for track in tracks_to_add:
-            mp3_filepath = "{c.MUSIC_FOLDER}/{track}.mp3"
-            self.ipod.add(mp3_filepath)
-
+        paths = [f"{c.MUSIC_FOLDER}/{track}.mp3" for track in tracks_to_add]
+       
+        self.ipod.add(paths)
 
     def read_json(self, json_file):
         with open(json_file, "r") as f:

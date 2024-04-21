@@ -1,10 +1,11 @@
 import requests
 import json
 #from spotdl import Spotdl
-from secret import client_id, client_secret
+from spotipod.secret import client_id, client_secret
+from ipod_ctrl.control import IpodController
 
 import time
-from spotify_api import Spotify
+from spotipod.spotify_api import Spotify
 
 album = "https://open.spotify.com/album/2g6eUnuvDUSkGdUDmc2vBy?si=u5uaq8N3R1u6V-c8rEDXQA"
 
@@ -29,14 +30,15 @@ tracks = [
     #"https://open.spotify.com/intl-de/album/03iNJiD9tUpIdBLvHYwZwT?si=-zn0MdCqRp2bX4-2EN5HUg",
     #"https://open.spotify.com/intl-de/album/7flMvR3hmHgwMpnTsdVApW?si=DAfIIaqkTDujgGpL1I3uWg",
     #"https://open.spotify.com/album/26QqnKS4AMOTmHsl2HfbnZ?si=o_DIzlTWTpWDjn6U7RrEEg",
-    "https://open.spotify.com/album/1JR6UkErYirK1yiwTf1fwj?si=hVNZs9ROSxWAErGF7i7-VA",
-    "https://open.spotify.com/album/110qiwftp3IZuEj6Lp5LqB?si=eZac3mpwRz27VYAiscxnrw",
-    "https://open.spotify.com/album/0SyO17NG4tEWWMc0lRocfb?si=Ml2Z2tHyQ8266ifYAWE-fg",
-    "https://open.spotify.com/album/5B76QDHjmGhG96FOdZmNBx?si=FikDq_XJT4WyY3aZ7ZmvBA",
-    "https://open.spotify.com/album/50MeziN5Do8zDtN4wINTTS?si=tWk6BkPgRY-ckxqoD4I1Xg",
-    "https://open.spotify.com/intl-de/album/0cTOvcvrbNiaiv4WXEUHzT?si=saOJZFgySbmQDlWI4vv-1w",
-    "https://open.spotify.com/intl-de/album/58IwNbkCL527REhNX7emWv?si=7Ve0v7rHSkSyTeazdRVcvA",
-    "https://open.spotify.com/intl-de/album/3yuCvOuQzeRrUJ4IUZJU65?si=LtDEZTUTS8qjue4mbmctbA",
+    #"https://open.spotify.com/album/110qiwftp3IZuEj6Lp5LqB?si=eZac3mpwRz27VYAiscxnrw",
+    #"https://open.spotify.com/album/1JR6UkErYirK1yiwTf1fwj?si=hVNZs9ROSxWAErGF7i7-VA",
+    #"https://open.spotify.com/album/0SyO17NG4tEWWMc0lRocfb?si=Ml2Z2tHyQ8266ifYAWE-fg",
+    #"https://open.spotify.com/album/5B76QDHjmGhG96FOdZmNBx?si=FikDq_XJT4WyY3aZ7ZmvBA",
+    #"https://open.spotify.com/album/50MeziN5Do8zDtN4wINTTS?si=tWk6BkPgRY-ckxqoD4I1Xg",
+    #"https://open.spotify.com/intl-de/album/0cTOvcvrbNiaiv4WXEUHzT?si=saOJZFgySbmQDlWI4vv-1w",
+    #"https://open.spotify.com/intl-de/album/58IwNbkCL527REhNX7emWv?si=7Ve0v7rHSkSyTeazdRVcvA",
+    #"https://open.spotify.com/intl-de/album/3yuCvOuQzeRrUJ4IUZJU65?si=LtDEZTUTS8qjue4mbmctbA",
+    "https://open.spotify.com/album/672lt6au46TYlrsYLLvTTa?si=igO2R0QbTLCUnxKoDOHERw"
 ]
 
 def test_get():
@@ -104,13 +106,48 @@ def test_get_tracks():
     tracks = spotify.get_tracks_of_album(id)
     print("hi")
 
+def test_sync():
+    from ipod_ctrl.sync import SyncController
+    SyncController().sync()
+
+
+def test_mnt():
+    import os
+    ls = os.listdir("/dev")
+
+    #always starts with sd
+    sds = [x for x in ls if "sd" in x]
+
+    #get the letter afterwarfds
+    sds = list(set([x[:3] for x in sds]))
+    if len(sds) == 0:
+        raise SystemError("Mount point not found")
+    
+    elif len(sds) > 1:
+        raise SystemError("More than one mount point found.")
+    
+    print(sds[0] + "2")
 
 
 #get_access_token()
 #test_get()
 
 #test_down()
-test_endpoint()
+#test_endpoint()
 
 #test_spotdl()
 #test_get_tracks()
+
+def test_add():
+    tracks_to_add = [
+        "6cyvFvADtpjU64L1gQWTK0",
+        "13haVESplLXnO0ktYj1Xuu"
+    ]
+    from spotipod import constant as c
+    import os
+    cwd = os.getcwd()
+    paths = [f"{cwd}/{c.MUSIC_FOLDER}/{track}.mp3" for track in tracks_to_add]
+
+    IpodController().add(paths)
+
+test_add()
