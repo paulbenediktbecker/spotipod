@@ -1,20 +1,27 @@
 import subprocess
 import os
 
+from spotipod import constant as c
+
 def run(string):
-    subprocess.run(string)
+    print(string)
+    p = subprocess.run(string)
+  
+
 
 def runs(ls):
     subprocess.run(ls, shell=True)
 
 class IpodController(object):
 
-    def __int__(self):
-        self.mnt = ""
+    def __init__(self):
+        self.mnt_dir = c.MNT_DIR
+        self.sys_mnt = self.get_usb_point()
         self.base_dir = "/home/becker/git/gnupod/gnupod-0.99/src"
+        self.mount()
 
     def is_mounted(self):
-        stat_info = os.statvfs(self.mnt)
+        stat_info = os.statvfs(self.mnt_dir)
         return stat_info.f_bfree != stat_info.f_blocks
     
     def ensure_mounted(self):
@@ -22,27 +29,37 @@ class IpodController(object):
             self.mount()
     
     def mount(self):
-        mnt_point = self.get_usb_point()
-        run(f"sudo mount {mnt_point}")
-        self.mnt =mnt_point
 
-    def add(self, mp3_file):
+        #first unmount it, in case its mounted somewhere else
+        self.unmount()
+
+        run(["sudo" ,"mount", self.sys_mnt, self.mnt_dir])
+
+    def add(self, mp3_file): 
         self.ensure_mounted()
-        run(f"{self.base_dir}/gnupod_addsong.pl -m {self.mnt} {mp3_file}")
+        run(["perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir, mp3_file])
 
     def release(self):
-        cmd = f"{self.base_dir}/mktunes.pl -m {self.mnt}"
+        cmd = [f"{self.base_dir}/mktunes.pl" ,"-m" ,self.mnt_dir]
         run(cmd)
         self.unmount()
 
     def unmount(self):
-        run(f"sudo umount {self.mnt}")
+        run(["sudo","umount", self.sys_mnt])
 
     def get_usb_point(self):
         ls = os.listdir("/dev")
 
-        if "sdb2" not in ls:
+        #always starts with sd
+        sds = [x for x in ls if "sd" in x]
+
+        #get the letter afterwarfds
+        sds = list(set([x[:3] for x in sds]))
+        if len(sds) == 0:
             raise SystemError("Mount point not found")
         
-        return "/dev/sdb2"
+        elif len(sds) > 1:
+            raise SystemError("More than one mount point found.")
+        
+        return "/dev/" + sds[0] + "2"
     
