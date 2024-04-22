@@ -57,10 +57,3 @@ if __name__ == '__main__':
 
 
                               
-https://cloud.paulbecker.cool:443 {
-        reverse_proxy localhost:11000
-}
-https://api.paulbecker.cool:443 {
-        reverse_proxy localhost:5000
-}
-    
