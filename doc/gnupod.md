@@ -9,17 +9,18 @@ also, to make gnupod work i had to add
 ```
 
 as the first line in every .pl file in src
+you can use the add_shebang.py for that.
+
 # installl make etc
 ```
 sudo apt-get install build-essential
 ```
-# installing gnupod
-download https://www.blinkenlights.ch/gnupod-dist/stable/gnupod-0.99.tgz
+
 
 GNUPOD Doc foudn here: https://www.gnu.org/software/gnupod/gnupod.html
 
 ### perl packages
-```
+
 install perl packages:
 ```
 sudo apt-get install libfile-ncopy-perl
@@ -27,14 +28,20 @@ sudo apt-get install libmp3-info-perl
 sudo apt-get install libunicode-string-perl
 sudo apt-get install libxml-parser-perl
 sudo apt-get install libxml-simple-perl
-```
-
-
-#install gnupod
-cd to a new dir, in my case /git/gnupod
-```
-
-sudo make install
+sudo perl -MCPAN -e "install Digest::SHA1"
+sudo apt install imagemagick
 
 ```
+
+
+# installing gnupod
+```
+git clone https://git.savannah.gnu.org/git/gnupod.git
+autoreconf --install 
+./configure
+make install
+```
+
+Replace FileMagic.pm and XMLhelper.pm at /etc/perl/GNUpod with the respecting files in this dir - the original ones are not compatible with todays perl. Works with Perl 5.34.0
+
 
