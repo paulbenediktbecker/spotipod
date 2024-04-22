@@ -2,7 +2,7 @@ from spotipod import constant as c
 from .control import IpodController
 
 import json 
-
+import os
 
 class SyncController(object):
 
@@ -12,9 +12,13 @@ class SyncController(object):
     def sync(self):
         tracks_to_add = self.get_tracks_to_add()
 
-        paths = [f"{c.MUSIC_FOLDER}/{track}.mp3" for track in tracks_to_add]
-       
-        self.ipod.add(paths)
+     
+        for track in tracks_to_add:
+            path = f"{c.MUSIC_FOLDER}/{track}.mp3"
+            artwork = self.get_artwork(track)
+
+            self.ipod.add(path,artwork)
+        self.ipod.release()
 
     def read_json(self, json_file):
         with open(json_file, "r") as f:
@@ -29,8 +33,11 @@ class SyncController(object):
         tracks_to_add = list(tracks_in_db - tracks_on_ipod)
         return tracks_to_add
 
-        
-
+    def get_artwork(self, id):
+        path = f"{c.ARTWORK_FOLDER}/{id}.jpg"
+        if os.path.isfile(path):
+            return path
+        return None
 
 
 

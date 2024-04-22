@@ -38,7 +38,8 @@ tracks = [
     #"https://open.spotify.com/intl-de/album/0cTOvcvrbNiaiv4WXEUHzT?si=saOJZFgySbmQDlWI4vv-1w",
     #"https://open.spotify.com/intl-de/album/58IwNbkCL527REhNX7emWv?si=7Ve0v7rHSkSyTeazdRVcvA",
     #"https://open.spotify.com/intl-de/album/3yuCvOuQzeRrUJ4IUZJU65?si=LtDEZTUTS8qjue4mbmctbA",
-    "https://open.spotify.com/album/672lt6au46TYlrsYLLvTTa?si=igO2R0QbTLCUnxKoDOHERw"
+    #"https://open.spotify.com/album/672lt6au46TYlrsYLLvTTa?si=igO2R0QbTLCUnxKoDOHERw"
+    "https://open.spotify.com/album/3StYo4OicJlkTKLQFOgA4B?si=1pZL_QQyTHy44uYIMPnz5A"
 ]
 
 def test_get():
@@ -107,8 +108,9 @@ def test_get_tracks():
     print("hi")
 
 def test_sync():
-    from ipod_ctrl.sync import SyncController
-    SyncController().sync()
+    url = f"http://127.0.0.1:5000/sync"
+    resp = requests.get(url)
+    print(resp)
 
 
 def test_mnt():
@@ -150,4 +152,4 @@ def test_add():
 
     IpodController().add(paths)
 
-test_add()
+test_sync()

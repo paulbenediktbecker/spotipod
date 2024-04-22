@@ -6,14 +6,14 @@ import time
 #import asyncio
 #asyncio.set_event_loop(asyncio.new_event_loop())
 
-from spotify_api import Spotify
-from secret import client_id, client_secret
+from .spotify_api import Spotify
+from .secret import client_id, client_secret
 
 from spotdl import Spotdl, DownloaderOptionalOptions
 from kafka import KafkaConsumer, KafkaProducer
+from . import constant as c 
 
-
-FILENAME = "data.json"
+FILENAME = c.MUSIC_DB_FILE
 
 
 
@@ -84,7 +84,8 @@ class Storage(object):
             try:
                 self.producer = KafkaProducer(bootstrap_servers='localhost:29092')
                 # Produce a message to the specified topic
-                self.producer.send("my_favorite_topic", key=b'download', value=track_id.encode())
+                self.producer.send("my_favorite_topic", key=b'download_track', value=track_id.encode())
+                self.producer.send("my_favorite_topic", key=b'download_artwork', value=track_id.encode())
                 self.producer.flush()  # Wait for any outstanding messages to be delivered
                 print('Message sent successfully.')
             except Exception as e:
@@ -92,6 +93,11 @@ class Storage(object):
             finally:
                 self.producer.close()
             print(f"sent id {track_id}")
+
+    def update_ipod_file(self):
+        with open(c.MUSIC_ON_IPOD_FILE, 'w') as fp:
+            json.dump(self.data, fp)
+
 
     
     

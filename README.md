@@ -11,19 +11,6 @@ python worker.py
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Other libraries
 https://github.com/dstaley/sharepod-lib
 https://github.com/dstaley/clickwheel

@@ -2,11 +2,9 @@
 from spotdl import Spotdl, DownloaderOptionalOptions
 from kafka import KafkaConsumer, KafkaProducer
 
-from secret import client_id, client_secret
+from spotipod.secret import client_id, client_secret
 
-from spotdl import Spotdl, DownloaderOptionalOptions
-from kafka import KafkaConsumer, KafkaProducer
-
+from spotipod.spotify_api import Spotify
 
 class Worker(object):
 
@@ -18,6 +16,8 @@ class Worker(object):
         self.consumer = KafkaConsumer("my_favorite_topic", bootstrap_servers='localhost:29092',
                                     auto_offset_reset='earliest', group_id='your_consumer_group')
 
+        self.spotify = Spotify()
+
     def download_song(self, id):
 
         print(f"ID arrived at Spotdl: {id}", flush=True)
@@ -27,6 +27,12 @@ class Worker(object):
 
         results = self.spotdl.download_songs(songs)
         #song, path = self.spotdl.download(songs[0])
+
+    def download_artwork(self,id):
+        try:
+            self.spotify.get_coverart(id)
+        except Exception as e:
+            pass
 
     def sync_ipod(self):
         pass
@@ -40,10 +46,13 @@ class Worker(object):
                 val = msg.value.decode()
                 key = msg.key.decode()
 
-                if key == "download":
-                    print(f"received id {val}")
+                if key == "download_track":
+                    print(f"received id {val} for track download")
                     self.download_song(val)
 
+                elif key == "download_artwork":
+                    print(f"received id {val} for artwork download")
+                    self.download_artwork(val)
                 elif key == "sync":
                     self.sync_ipod()
         except KeyboardInterrupt:

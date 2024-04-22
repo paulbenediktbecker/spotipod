@@ -17,7 +17,7 @@ class IpodController(object):
     def __init__(self):
         self.mnt_dir = c.MNT_DIR
         self.sys_mnt = self.get_usb_point()
-        self.base_dir = "/home/becker/git/gnupod/gnupod-0.99/src"
+        self.base_dir = "/home/becker/git/gnupod/src"
         self.mount()
 
     def is_mounted(self):
@@ -35,12 +35,16 @@ class IpodController(object):
 
         run(["sudo" ,"mount", self.sys_mnt, self.mnt_dir])
 
-    def add(self, mp3_files): 
+    def add(self, mp3_file, jpg_file): 
         self.ensure_mounted()
-        cmd = ["sudo", "perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir]
-        cmd += mp3_files
+
+        if jpg_file:
+            cmd = ["sudo", "perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir,"--artwork", jpg_file, mp3_file]
+
+        else:
+            cmd = cmd = ["sudo", "perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir, mp3_file]
         run(cmd)
-        self.release()
+
 
     def release(self):
         cmd = ["sudo", f"{self.base_dir}/mktunes.pl" ,"-m" ,self.mnt_dir]

@@ -1,9 +1,9 @@
 import requests
 import json
 import datetime
-
+import os
 from .secret import client_id, client_secret
-
+from . import constant as c
 class Spotify(object):
     
     def __init__(self):
@@ -11,7 +11,9 @@ class Spotify(object):
         self.token_type = None
         self.time_last_authorized = None
         self.secs_token_valid = 0
-        pass
+
+        os.makedirs(c.ARTWORK_FOLDER,exist_ok=True)
+        
 
     def authorize(self):
         ct = datetime.datetime.now()
@@ -42,3 +44,45 @@ class Spotify(object):
 
         song_ids = [x["id"] for x in content["items"]]
         return song_ids
+    
+    def get_coverart(self,track_id):
+        self.authorize()
+        header = {"Authorization": f"Bearer {self.access_token}"}
+        url = f"https://api.spotify.com/v1/tracks/{track_id}"
+        resp = requests.get(headers=header, url= url)
+        content = json.loads(resp.content.decode())
+        print("hi")
+        if "album" in content:
+            if "images" in content["album"]:
+                
+                imgs = content['album']['images']
+                if not imgs or len(imgs)< 1:
+                    return False
+
+                min= None
+                min_index = None
+
+                #finding smallest entry
+                for index, img in enumerate(imgs):
+                    if "height" not in img:
+                        continue
+                    if min_index is None:
+                        min_index = index
+                        min = img["height"]
+                        continue
+                    if img["height"] < min:
+                        min = img["height"]
+                        min_index = index
+
+                img = imgs[min_index]
+                img_url = img["url"]
+
+                #download and save img
+                img_data = requests.get(img_url).content
+                with open(f'{c.ARTWORK_FOLDER}/{track_id}.jpg', 'wb') as handler:
+                    handler.write(img_data)
+                return True
+                
+        return False
+
+        
