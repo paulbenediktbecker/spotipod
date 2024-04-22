@@ -55,6 +55,7 @@ class IpodController(object):
         run(["sudo","umount", self.sys_mnt])
 
     def get_usb_point(self):
+        return "sdb2"
         ls = os.listdir("/dev")
 
         #always starts with sd
