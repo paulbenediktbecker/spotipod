@@ -41,13 +41,26 @@ def add():
     return "400" 
     
 
-@app.route('/sync', methods=['GET'])
+@app.route('/sync', methods=['GET'])    
 def sync():
     SyncController().sync()
     print("synced.")
     return "200"
+
+@app.route('/test', methods=['GET'])
+def test():
+    print("arrived")
+    return "200"                                
     
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
 
+
+                              
+https://cloud.paulbecker.cool:443 {
+        reverse_proxy localhost:11000
+}
+https://api.paulbecker.cool:443 {
+        reverse_proxy localhost:5000
+}
     
