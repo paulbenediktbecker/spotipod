@@ -1,5 +1,7 @@
 import os
 import subprocess
+from functools import wraps
+import jwt
 
 from flask import Flask, request
 
@@ -8,11 +10,45 @@ from ipod_ctrl.sync import SyncController
 from ipod_ctrl.control import IpodController
 
 app = Flask(__name__)
+SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret'
+app.config['SECRET_KEY'] = SECRET_KEY
 
 storage = Storage()
 
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if "Authorization" in request.headers:
+            token = request.headers["Authorization"].split(" ")[1]
+        if not token:
+            return {
+                "message": "Authentication Token is missing!",
+                "data": None,
+                "error": "Unauthorized"
+            }, 401
+        try:
+            
+            if token != ("Bearer" + SECRET_KEY):
+                return {
+                "message": "Invalid Authentication token!",
+                "data": None,
+                "error": "Unauthorized"
+            }, 401
+        except Exception as e:
+            return {
+                "message": "Internal Server error.",
+                "data": None,
+                "error": str(e)
+            }, 500
+
+        return f(*args, **kwargs)
+
+    return decorated
+
 @app.route('/add', methods=['GET'])
+@token_required
 def add():
     link = request.args.get('link')
     
@@ -41,13 +77,15 @@ def add():
     return "400" 
     
 
-@app.route('/sync', methods=['GET'])    
+@app.route('/sync', methods=['GET'])
+@token_required    
 def sync():
     SyncController().sync()
     print("synced.")
     return "200"
 
 @app.route('/test', methods=['GET'])
+@token_required
 def test():
     print("arrived")
     return "200"                                
