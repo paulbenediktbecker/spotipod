@@ -5,7 +5,7 @@ from kafka import KafkaConsumer, KafkaProducer
 from spotipod.secret import client_id, client_secret
 
 from spotipod.spotify_api import Spotify
-
+import time
 class Worker(object):
 
     def __init__(self):
@@ -39,26 +39,30 @@ class Worker(object):
 
 
     def work(self):
-        print("consuming")    
-        try:
-            # Poll for new messages
-            for msg in self.consumer:
-                val = msg.value.decode()
-                key = msg.key.decode()
+        while True:
+            
+            try:
+                print("consuming")
+                # Poll for new messages
+                for msg in self.consumer:
+                    val = msg.value.decode()
+                    key = msg.key.decode()
 
-                if key == "download_track":
-                    print(f"received id {val} for track download")
-                    self.download_song(val)
+                    if key == "download_track":
+                        print(f"received id {val} for track download")
+                        self.download_song(val)
 
-                elif key == "download_artwork":
-                    print(f"received id {val} for artwork download")
-                    self.download_artwork(val)
-                elif key == "sync":
-                    self.sync_ipod()
-        except KeyboardInterrupt:
-            pass
-        finally:
-            self.consumer.close()
+                    elif key == "download_artwork":
+                        print(f"received id {val} for artwork download")
+                        self.download_artwork(val)
+                    elif key == "sync":
+                        self.sync_ipod()
+            except KeyboardInterrupt:
+                pass
+            finally:
+                self.consumer.close()
+            print("worker went down.")
+            time.sleep(1)
 
 worker = Worker()
 worker.work()
