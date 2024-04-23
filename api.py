@@ -10,8 +10,8 @@ from ipod_ctrl.sync import SyncController
 from ipod_ctrl.control import IpodController
 
 app = Flask(__name__)
-SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret'
-app.config['SECRET_KEY'] = SECRET_KEY
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
 
 storage = Storage()
 
@@ -21,10 +21,12 @@ def token_required(f):
     def decorated(*args, **kwargs):
         token = None
         if "Authorization" in request.headers:
+            print(request.headers["Authorization"])
             token = request.headers["Authorization"].split(" ")[1]
         if not token:
             return {
                 "message": "Authentication Token is missing!",
+
                 "data": None,
                 "error": "Unauthorized"
             }, 401
@@ -90,8 +92,8 @@ def test():
     print("arrived")
     return "200"                                
     
-if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+#def run():
+    #app.run(debug=True,host='0.0.0.0')
 
 
                               
