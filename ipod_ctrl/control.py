@@ -47,7 +47,7 @@ class IpodController(object):
 
 
     def release(self):
-        cmd = ["sudo", f"{self.base_dir}/mktunes.pl" ,"-m" ,self.mnt_dir]
+        cmd = ["sudo", "perl",f"{self.base_dir}/mktunes.pl" ,"-m" ,self.mnt_dir]
         run(cmd)
         self.unmount()
 
