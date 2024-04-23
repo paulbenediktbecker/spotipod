@@ -30,7 +30,7 @@ def token_required(f):
             }, 401
         try:
             
-            if token != ("Bearer" + SECRET_KEY):
+            if token != SECRET_KEY:
                 return {
                 "message": "Invalid Authentication token!",
                 "data": None,
