@@ -8,6 +8,7 @@ from spotipod.storage import Storage
 from ipod_ctrl.sync import SyncController
 from ipod_ctrl.control import IpodController
 
+
 app = Flask(__name__)
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
@@ -91,8 +92,10 @@ def test():
     print("arrived")
     return "200"                                
     
-#def run():
-    #app.run(debug=True,host='0.0.0.0')
+def run():
+    app.run(debug=True,host='0.0.0.0')
+
+run()
 
 
                               
