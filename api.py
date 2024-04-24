@@ -1,7 +1,6 @@
 import os
 import subprocess
 from functools import wraps
-import jwt
 
 from flask import Flask, request
 

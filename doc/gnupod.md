@@ -6,6 +6,7 @@ https://unix.stackexchange.com/questions/333721/how-to-stop-auto-mounting-of-dev
 also, to make gnupod work i had to add 
 ```
 #!/usr/bin/perl
+sudo apt install ffmpeg
 ```
 
 as the first line in every .pl file in src
