@@ -12,7 +12,9 @@ class Spotify(object):
         self.time_last_authorized = None
         self.secs_token_valid = 0
 
-        os.makedirs(c.ARTWORK_FOLDER,exist_ok=True)
+        self.ARTWORK_FOLDER = os.environ("ARTWORK_FOLDER")
+
+        os.makedirs(self.ARTWORK_FOLDER,exist_ok=True)
         
 
     def authorize(self):
@@ -79,7 +81,7 @@ class Spotify(object):
 
                 #download and save img
                 img_data = requests.get(img_url).content
-                with open(f'{c.ARTWORK_FOLDER}/{track_id}.jpg', 'wb') as handler:
+                with open(f'{self.ARTWORK_FOLDER}/{track_id}.jpg', 'wb') as handler:
                     handler.write(img_data)
                 return True
                 

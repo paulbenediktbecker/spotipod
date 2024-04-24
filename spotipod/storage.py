@@ -13,7 +13,7 @@ from spotdl import Spotdl, DownloaderOptionalOptions
 from kafka import KafkaConsumer, KafkaProducer
 from . import constant as c 
 
-FILENAME = c.MUSIC_DB_FILE
+FILENAME = os.environ("MUSIC_DB_FILE")
 
 
 
@@ -95,7 +95,7 @@ class Storage(object):
             print(f"sent id {track_id}")
 
     def update_ipod_file(self):
-        with open(c.MUSIC_ON_IPOD_FILE, 'w') as fp:
+        with open(os.environ("MUSIC_ON_IPOD_FILE"), 'w') as fp:
             json.dump(self.data, fp) 
 
 
