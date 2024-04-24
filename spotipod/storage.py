@@ -96,7 +96,7 @@ class Storage(object):
 
     def update_ipod_file(self):
         with open(c.MUSIC_ON_IPOD_FILE, 'w') as fp:
-            json.dump(self.data, fp)
+            json.dump(self.data, fp) 
 
 
     
