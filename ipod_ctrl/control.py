@@ -1,7 +1,6 @@
 import subprocess
 import os
 
-from spotipod import constant as c
 
 def run(string):
     print(string)

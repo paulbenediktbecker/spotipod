@@ -11,7 +11,6 @@ from .secret import client_id, client_secret
 
 from spotdl import Spotdl, DownloaderOptionalOptions
 from kafka import KafkaConsumer, KafkaProducer
-from . import constant as c 
 
 FILENAME = os.environ("MUSIC_DB_FILE")
 

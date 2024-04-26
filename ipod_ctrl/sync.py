@@ -1,4 +1,4 @@
-from spotipod import constant as c
+
 from .control import IpodController
 
 import json 

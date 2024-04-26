@@ -3,7 +3,6 @@ import json
 import datetime
 import os
 from .secret import client_id, client_secret
-from . import constant as c
 class Spotify(object):
     
     def __init__(self):
