@@ -1,0 +1,29 @@
+FROM python:3.9
+
+WORKDIR /usr/app
+
+
+######################################## ENV
+
+
+
+######################################## files
+
+COPY spotipod ./spotipod
+COPY api.py .
+COPY ../requirements.txt .
+
+
+######################################## Requirements
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+
+
+#############################
+ENV PYTHONPATH /usr/app
+CMD ["python", "api.py"]
+
+
+# build command
+# docker compose build

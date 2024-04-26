@@ -4,10 +4,7 @@ from functools import wraps
 
 from flask import Flask, request
 
-from spotipod.storage import Storage
-from ipod_ctrl.sync import SyncController
-from ipod_ctrl.control import IpodController
-
+from server.storage import Storage
 
 app = Flask(__name__)
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -79,12 +76,12 @@ def add():
     return "400" 
     
 
-@app.route('/sync', methods=['GET'])
-@token_required    
-def sync():
-    SyncController().sync()
-    print("synced.")
-    return "200"
+#@app.route('/sync', methods=['GET'])
+#@token_required    
+#def sync():
+#    SyncController().sync()
+#    print("synced.")
+#    return "200"
 
 @app.route('/test', methods=['GET'])
 @token_required

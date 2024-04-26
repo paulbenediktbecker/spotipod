@@ -2,7 +2,6 @@ FROM python:3.9
 
 WORKDIR /usr/app
 
-
 ######################################## ENV
 
 ENV MUSIC_FOLDER=music
@@ -12,19 +11,16 @@ ENV MUSIC_ON_IPOD_FILE=./on_ipod.json
 ENV MNT_DIR="/mnt/ipod"
 
 ######################################## files
-
-COPY spotipod ./spotipod
 COPY ipod_ctrl ./ipod_ctrl
-COPY api.py .
-COPY worker.py .
-COPY requirements.txt .
 COPY EMPTY_data.json $MUSIC_DB_FILE
 COPY EMPTY_on_ipod.json $MUSIC_ON_IPOD_FILE
 
-
+COPY ../requirements.txt .
 ######################################## Requirements
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+
+
 
 RUN apt-get update
 RUN apt-get install -y build-essential
@@ -50,8 +46,4 @@ WORKDIR /usr/app
 
 #############################
 ENV PYTHONPATH /usr/app
-CMD ["python", "api.py"]
-
-
-# build command
-# docker compose build
+CMD ["python", "worker.py"]

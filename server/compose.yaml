@@ -2,10 +2,13 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile 
+      dockerfile: Dockerfile
     volumes:
       - /dev:/dev
     env_file:
       - path: ./.env
-
+    ports:
+      - "5000:5000" #expose flask ports
     
+
+  

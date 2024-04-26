@@ -2,9 +2,9 @@
 from spotdl import Spotdl, DownloaderOptionalOptions
 from kafka import KafkaConsumer, KafkaProducer
 
-from spotipod.secret import client_id, client_secret
+from server.secret import client_id, client_secret
 
-from spotipod.spotify_api import Spotify
+from server.spotify_api import Spotify
 import time
 class Worker(object):
 
