@@ -4,7 +4,7 @@ from functools import wraps
 
 from flask import Flask, request
 
-from server.storage import Storage
+from .storage import Storage
 
 app = Flask(__name__)
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -52,10 +52,10 @@ def add():
     link = request.args.get('link')
     
     if link is None:
-        return "400"
+        return {},400
 
     if "https://open.spotify.com" not in link:
-        return "400"
+        return {},400
     
     if "album" in link:
         album_id = link.split("album")[1][1:]
@@ -63,7 +63,7 @@ def add():
             album_id = album_id.split("?")[0]
 
         storage.add_album(album_id)
-        return "200"
+        return {},400
     
     if "track" in link:
         track_id = link.split("track")[1][1:]
@@ -71,10 +71,20 @@ def add():
             track_id = track_id.split("?")[0]
 
         storage.add_track(track_id)
-        return "200"
+        return {},200
     
-    return "400" 
+    return {},200
     
+@app.route('/job', methods=['GET'])
+@token_required
+def job():
+    return storage.get_job()
+
+@app.route('/accept', methods=['GET'])
+@token_required
+def accept():
+    return 500 
+
 
 #@app.route('/sync', methods=['GET'])
 #@token_required    
@@ -92,7 +102,7 @@ def test():
 def run():
     app.run(debug=True,host='0.0.0.0')
 
-run()
+
 
 
                               

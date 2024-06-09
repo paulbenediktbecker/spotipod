@@ -54,11 +54,3 @@ https://github.com/dstaley/clickwheel
     1. Let worker run on same device as server and let it instantly download the files when it arrives (how i would like to use it)
     2. Let worker run on different device than server and let it pull the jobs on demand (e.g. a friend of mine sends links from her phone to my server and can download and songs on her own laptop)
 
-# todo
-worker muss die möglichkeit haben, an den server rückzumelden, dass:
-- Die jsons der daten müssen persitiert werden
-- outsource den sync zum worker. -> mach startsync file
-- split requirements txt from server and worker
-1. der job abgearbeitet wurde
-2. Musik auf den ipod geladen wurd
-3. Punkt 2 nochmal manuell nachzuholen

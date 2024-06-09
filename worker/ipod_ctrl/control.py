@@ -14,9 +14,9 @@ def runs(ls):
 class IpodController(object):
 
     def __init__(self):
-        self.mnt_dir = os.environ("MNT_DIR")
+        self.mnt_dir = os.environ.get("MNT_DIR")
         self.sys_mnt = self.get_usb_point()
-        self.base_dir = "/home/becker/git/gnupod/src"
+        self.base_dir = os.environ.get("GNUPOD_DIR")
         self.mount()
 
     def is_mounted(self):

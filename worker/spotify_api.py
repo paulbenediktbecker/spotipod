@@ -2,17 +2,19 @@ import requests
 import json
 import datetime
 import os
-from .secret import client_id, client_secret
 class Spotify(object):
     
-    def __init__(self):
+    def __init__(self, client_id, client_secret):
         self.access_token = None
         self.token_type = None
         self.time_last_authorized = None
         self.secs_token_valid = 0
 
-        self.ARTWORK_FOLDER = os.environ("ARTWORK_FOLDER")
+        self.CLIENT_ID = client_id
+        self.CLIENT_SECRET = client_secret
 
+        self.ARTWORK_FOLDER = os.environ.get("ARTWORK_FOLDER")
+  
         os.makedirs(self.ARTWORK_FOLDER,exist_ok=True)
         
 
@@ -29,7 +31,7 @@ class Spotify(object):
     def renew_auth_token(self):
         url = "https://accounts.spotify.com/api/token"
         header = {"Content-Type": "application/x-www-form-urlencoded"}
-        body = f"grant_type=client_credentials&client_id={client_id}&client_secret={client_secret}"
+        body = f"grant_type=client_credentials&client_id={self.CLIENT_ID}&client_secret={self.CLIENT_SECRET}"
         resp = requests.post(headers =  header, url = url, data=body)
         content = json.loads(resp.content.decode())
         self.access_token = content["access_token"]

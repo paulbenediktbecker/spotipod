@@ -4,16 +4,13 @@ WORKDIR /usr/app
 
 ######################################## ENV
 
-ENV MUSIC_FOLDER=music
+
+ENV MNT_DIR=/mnt/ipod
+ENV MUSIC_FOLDER=./music
 ENV ARTWORK_FOLDER=$MUSIC_FOLDER/artwork
-ENV MUSIC_DB_FILE=./data.json
-ENV MUSIC_ON_IPOD_FILE=./on_ipod.json
-ENV MNT_DIR="/mnt/ipod"
 
 ######################################## files
 COPY ipod_ctrl ./ipod_ctrl
-COPY EMPTY_data.json $MUSIC_DB_FILE
-COPY EMPTY_on_ipod.json $MUSIC_ON_IPOD_FILE
 
 COPY ../requirements.txt .
 ######################################## Requirements
@@ -42,6 +39,7 @@ RUN autoreconf --install
 RUN ./configure
 RUN make install
 WORKDIR /usr/app
+ENV GNUPOD_DIR=/urs/app/gnupod/src
 
 
 #############################
