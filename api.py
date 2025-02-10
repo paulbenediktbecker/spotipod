@@ -83,7 +83,7 @@ def add():
 def sync():
     SyncController().sync()
     print("synced.")
-    return "200"
+    
 
 @app.route('/test', methods=['GET'])
 @token_required
@@ -94,5 +94,7 @@ def test():
 #def run():
     #app.run(debug=True,host='0.0.0.0')
 
+# gunicorn -w 1 -b 0.0.0.0:5000 "api:app"
 
-                              
+
+       

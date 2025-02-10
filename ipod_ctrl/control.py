@@ -39,10 +39,10 @@ class IpodController(object):
         self.ensure_mounted()
 
         if jpg_file:
-            cmd = ["sudo", "perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir,"--artwork", jpg_file, mp3_file]
+            cmd = ["sudo", "perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir,"--artwork", f"{jpg_file}", f"{mp3_file}"]
 
         else:
-            cmd = cmd = ["sudo", "perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir, mp3_file]
+            cmd = cmd = ["sudo", "perl", f"{self.base_dir}/gnupod_addsong.pl" ,"-m", self.mnt_dir, f"{mp3_file}"]
         run(cmd)
 
 

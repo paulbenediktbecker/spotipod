@@ -12,6 +12,11 @@ class SyncController(object):
     def sync(self):
         tracks_to_add = self.get_tracks_to_add()
 
+        DEBUG = True
+        if DEBUG:
+            tracks_to_add = os.listdir("/home/becker/git/spotipod/music")
+            tracks_to_add = [t for t in tracks_to_add if t.endswith(".mp3")]
+            tracks_to_add = [t[:-4] for t in tracks_to_add]
      
         for track in tracks_to_add:
             path = f"{c.MUSIC_FOLDER}/{track}.mp3"

@@ -108,9 +108,8 @@ def test_get_tracks():
     print("hi")
 
 def test_sync():
-    url = f"http://127.0.0.1:5000/sync"
-    resp = requests.get(url)
-    print(resp)
+    from ipod_ctrl.sync import SyncController
+    SyncController().sync()
 
 
 def test_mnt():
