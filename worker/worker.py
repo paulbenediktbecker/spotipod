@@ -10,7 +10,8 @@ from worker.spotify_api import Spotify
 class Worker(object):
 
     def __init__(self):
-        options = DownloaderOptionalOptions(output="music/{track-id}.{output-ext}")
+        output_folder = os.environ.get("MUSIC_DIR")
+        options = DownloaderOptionalOptions(output=f"{output_folder}"+"/{track-id}.{output-ext}")
 
         client_id = os.environ.get("SPOTIFY_CLIENT_ID")
         client_secret = os.environ.get("SPOTIFY_CLIENT_SECRET")
@@ -37,9 +38,7 @@ class Worker(object):
         except Exception as e:
             pass
 
-    def sync_ipod(self):
-        pass
-
+    
 
     def work(self):
         secs_to_sleep = 2
@@ -72,13 +71,8 @@ class Worker(object):
                     elif key == "download_artwork":
                         print(f"received id {val} for artwork download")
                         self.download_artwork(val)
-                    elif key == "sync":
-                        self.sync_ipod()
-
                     #ToDo accept job
                     continue #skip sleep
-                
-
                 if response.status_code == 404: #no new job
                     print("No new job.")
                 else:

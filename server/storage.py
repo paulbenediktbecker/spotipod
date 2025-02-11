@@ -141,10 +141,6 @@ class Storage(object):
         except Exception as e:
             print(f'Error consuming message: {str(e)}')
             return {},500
-    
-    def update_ipod_file(self):
-        with open(os.environ.get("MUSIC_ON_IPOD_FILE"), 'w') as fp:
-            json.dump(self.data, fp) 
 
 
     
