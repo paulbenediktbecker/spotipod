@@ -2,4 +2,4 @@
 *.pyc
 .vscode**
 *secret.py
-*.env
+.env
