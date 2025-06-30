@@ -54,3 +54,23 @@ https://github.com/dstaley/clickwheel
     1. Let worker run on same device as server and let it instantly download the files when it arrives (how i would like to use it)
     2. Let worker run on different device than server and let it pull the jobs on demand (e.g. a friend of mine sends links from her phone to my server and can download and songs on her own laptop)
 
+
+
+# FORMAT FOR IPOD
+download in flac, then
+
+
+for f in *.flac; do
+  ffmpeg -i "$f" -map 0:a -c:v copy -c:a alac -b:a 128k -movflags +faststart "converted/${f%.flac}.m4a"
+done
+
+and then args = [
+          `-m ${IPOD_PATH}`,
+          `--artwork "${artwork}"`,
+          `"${mappedPath}"`,
+          "--decode=aac"
+        ];
+
+       find . | wc -l
+
+
