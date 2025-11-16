@@ -65,24 +65,31 @@ class Spotify(object):
                 min= None
                 min_index = None
 
-                #finding smallest entry
-                for index, img in enumerate(imgs):
-                    if "height" not in img:
-                        continue
-                    if min_index is None:
-                        min_index = index
-                        min = img["height"]
-                        continue
-                    if img["height"] < min:
-                        min = img["height"]
-                        min_index = index
+                
+                if False:
+                    #finding smallest entry
+                    for index, img in enumerate(imgs):
+                        if "height" not in img:
+                            continue
+                        if min_index is None:
+                            min_index = index
+                            min = img["height"]
+                            continue
+                        if img["height"] < min:
+                            min = img["height"]
+                            min_index = index
+
+                min_index = 0
 
                 img = imgs[min_index]
                 img_url = img["url"]
 
                 #download and save img
                 img_data = requests.get(img_url).content
-                with open(f'{self.ARTWORK_FOLDER}/{track_id}.jpg', 'wb') as handler:
+
+                title = content['name']
+                artist = content['album']['name']
+                with open(f'{self.ARTWORK_FOLDER}/{artist} - {title}.jpg', 'wb') as handler:
                     handler.write(img_data)
                 return True
                 
