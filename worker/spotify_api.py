@@ -87,8 +87,8 @@ class Spotify(object):
                 #download and save img
                 img_data = requests.get(img_url).content
 
-                title = content['name']
-                artist = content['album']['name']
+                title = content['name'].replace(r"/","")
+                artist = content['artists'][0]['name'].replace(r"/","")
                 with open(f'{self.ARTWORK_FOLDER}/{artist} - {title}.jpg', 'wb') as handler:
                     handler.write(img_data)
                 return True
